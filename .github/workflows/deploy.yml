@@ -28,7 +28,7 @@ jobs:
           REMOTE_HOST: ${{ secrets.HOST_DNS }}
           REMOTE_USER: ${{ secrets.USERNAME }}
           TARGET: ${{ secrets.TARGET_DIR }}
-          ARGS: '-avz --delete --no-tty'
+          ARGS: '-avz --delete'
 
       - name: Execute remote commands
         uses: appleboy/ssh-action@master
