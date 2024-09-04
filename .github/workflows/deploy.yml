@@ -6,21 +6,21 @@ on:
       - main
 
 jobs:
-  approve:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
-      - name: Wait for approval
-        run: |
-          echo "Deployment is pending approval. Please approve manually."
-          sleep 3600  # Wait for 1 hour (adjust as needed)
-          echo "Deployment approved."
+  # approve:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '16.x'
+  #     - name: Wait for approval
+  #       run: |
+  #         echo "Deployment is pending approval. Please approve manually."
+  #         sleep 3600  # Wait for 1 hour (adjust as needed)
+  #         echo "Deployment approved."
 
   deploy:
     runs-on: ubuntu-latest
-
+    environment: prod 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
