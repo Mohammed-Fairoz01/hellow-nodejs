@@ -22,13 +22,18 @@ jobs:
     needs: build
     steps:
       - name: Awaiting approval
-        run: echo "Approve this deployment in the Actions tab to proceed."
-        timeout-minutes: 30  # This is the timeout before the job fails
-        continue-on-error: true  # Continue the workflow even if the job fails
+        id: approval
+        run: |
+          echo "Waiting for approval..."
+          echo "::set-output name=approved::false"
+
+      - name: Approval step
+        run: exit 1
 
   deploy:
     runs-on: ubuntu-latest
-    needs: manual-approval
+    needs: [build, manual-approval]
+    if: ${{ needs.manual-approval.outputs.approved == 'true' }}
     steps:
       - name: Deploy the project
         run: echo "Deploying the project..."
