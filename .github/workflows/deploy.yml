@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Awaiting approval
         run: echo "Approve this deployment in the Actions tab to proceed."
-        timeout-minutes: 60  # This is the timeout before the job fails
+        timeout-minutes: 30  # This is the timeout before the job fails
         continue-on-error: true  # Continue the workflow even if the job fails
 
   deploy:
