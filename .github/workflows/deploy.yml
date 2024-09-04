@@ -1,4 +1,4 @@
-name: Approval Practice Workflows
+name: Approval Practice Workflow
 
 on:
   push:
