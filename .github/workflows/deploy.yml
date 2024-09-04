@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Run a fake build
+      - name: Run a demo build
         run: echo "Building the project..."
 
   deploy:
