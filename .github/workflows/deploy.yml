@@ -6,6 +6,18 @@ on:
       - main
 
 jobs:
+  approve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - name: Wait for approval
+        run: |
+          echo "Deployment is pending approval. Please approve manually."
+          sleep 3600  # Wait for 1 hour (adjust as needed)
+          echo "Deployment approved."
+
   deploy:
     runs-on: ubuntu-latest
 
@@ -18,9 +30,6 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Install dependencies
-        run: npm install
-
       - name: Deploy to EC2
         uses: easingthemes/ssh-deploy@main
         env:
@@ -29,15 +38,3 @@ jobs:
           REMOTE_USER: ${{ secrets.USERNAME }}
           TARGET: ${{ secrets.TARGET_DIR }}
           ARGS: '-avz --delete'
-
-      - name: Execute remote commands
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST_DNS }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            cd ${{ secrets.TARGET_DIR }}
-            npm install
-            pkill node || true
-            nohup node app.js > app.log 2>&1 &
