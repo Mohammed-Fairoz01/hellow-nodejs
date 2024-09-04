@@ -1,40 +1,34 @@
-name: Deploy to EC2
+name: Approval Practice Workflow
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
-  # approve:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: '16.x'
-  #     - name: Wait for approval
-  #       run: |
-  #         echo "Deployment is pending approval. Please approve manually."
-  #         sleep 3600  # Wait for 1 hour (adjust as needed)
-  #         echo "Deployment approved."
-
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment: prod 
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
+      - name: Run a fake build
+        run: echo "Building the project..."
 
-      - name: Deploy to EC2
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          REMOTE_HOST: ${{ secrets.HOST_DNS }}
-          REMOTE_USER: ${{ secrets.USERNAME }}
-          TARGET: ${{ secrets.TARGET_DIR }}
-          ARGS: '-avz --delete'
+  manual-approval:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Awaiting approval
+        run: echo "Approve this deployment in the Actions tab to proceed."
+        timeout-minutes: 60  # This is the timeout before the job fails
+        continue-on-error: true  # Continue the workflow even if the job fails
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: manual-approval
+    steps:
+      - name: Deploy the project
+        run: echo "Deploying the project..."
