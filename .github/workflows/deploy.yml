@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: production  # This is the environment you created
+      name: prod  # This is the environment you created
     steps:
       - name: Deploy the project
         run: echo "Deploying the project..."
